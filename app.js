@@ -218,10 +218,24 @@ const players = [
 
 
 function createTeams() {
+    //assigns team numbers to players
     for (let i = 0; i < 20; i++) {
         let validPlayerPool = players.filter((player) => player.teamNumber == 0)
         let chosenPlayerIndex = Math.floor(Math.random() * validPlayerPool.length)
-        validPlayerPool[chosenPlayerIndex].teamNumber = (i % 2)
+        validPlayerPool[chosenPlayerIndex].teamNumber = ((i % 2) + 1)
         console.log(validPlayerPool[chosenPlayerIndex])
     }
+    //fiters assigned players into their team array
+    let team1 = players.filter((player) => player.teamNumber == 1)
+    let team2 = players.filter((player) => player.teamNumber == 2)
+
+    //sort each team array by the skill of players
+    team1.sort((a, b) => b.skill - a.skill)
+    console.log(team1)
+
+    team2.sort((a, b) => b.skill - a.skill)
+    console.log(team2)
 }
+
+
+
