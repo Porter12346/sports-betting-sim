@@ -6,6 +6,13 @@ let team2
 let currentlyPlayingTeam1 = []
 let currentlyPlayingTeam2 = []
 
+let quarter = 1
+let round = 1
+
+let team1Score = 0
+
+let team2Score = 0
+
 const players =
     [
         {
@@ -227,7 +234,6 @@ function createTeams() {
         let validPlayerPool = players.filter((player) => player.teamNumber == 0)
         let chosenPlayerIndex = Math.floor(Math.random() * validPlayerPool.length)
         validPlayerPool[chosenPlayerIndex].teamNumber = ((i % 2) + 1)
-        console.log(validPlayerPool[chosenPlayerIndex])
     }
     //fiters assigned players into their team array
     team1 = players.filter((player) => player.teamNumber == 1)
@@ -235,10 +241,9 @@ function createTeams() {
 
     //sort each team array by the skill of players
     team1.sort((a, b) => b.skill - a.skill)
-    console.log(team1)
 
     team2.sort((a, b) => b.skill - a.skill)
-    console.log(team2)
+
 }
 
 function putPlayersOnField() {
@@ -247,18 +252,21 @@ function putPlayersOnField() {
         currentlyPlayingTeam1.push(nextOnBench)
     }
     while (currentlyPlayingTeam1.length < 5)
+    console.log(`team1 playing: `, currentlyPlayingTeam1)
+    console.log(`team1 bench: `, team1)
 
     do {
         let nextOnBench = team2.shift()
         currentlyPlayingTeam2.push(nextOnBench)
     }
     while (currentlyPlayingTeam2.length < 5)
+    console.log(`team2 playing: `, currentlyPlayingTeam2)
+    console.log(`team2 bench: `, team2)
 }
 
 
 function drawFullTeams() {
     let team1Html = ``
-    console.log(team1)
     team1.forEach((player) => team1Html += `<div div class="d-flex flex-column align-items-center" > <span class="fs-1">${player.emoji}</span> ${player.name} <br> Skill: ${player.skill} <br> Risk: ${player.chanceOfInjury}</div>`)
     document.getElementById("full-team1-display").innerHTML = team1Html
 
@@ -267,7 +275,54 @@ function drawFullTeams() {
     document.getElementById("full-team2-display").innerHTML = team2Html
 }
 
+function startQuarter() {
+    let delay = setTimeout(() => { console.log('waiting'); }, 2000);
+    calculatePlay(currentlyPlayingTeam1, team1, 0)
+    calculatePlay(currentlyPlayingTeam2, team2, 0)
+}
+
+function calculatePoints(player) {
+    let baseShot = Math.random() * 100
+    if (baseShot + player.skill < 150) {
+        return (3)
+    }
+    else if (baseShot + player.skill < 150) {
+        return (2)
+    }
+    else {
+        return 0
+    }
+}
+
+function calculateInjury(player) {
+    let baseInjury = Math.random() * 100
+    if (baseInjury + player.chanceOfInjury < 100) {
+        return (true)
+    }
+    else {
+        return (false)
+    }
+}
+
+function calculatePlay(teamCurrent, teamBench, teamScore) {
+    let playerIndex = Math.floor(Math.random() * 5)
+    let player = teamCurrent[playerIndex]
+    console.log(`player #`, playerIndex, ` `, player.name, `has the ball`)
+    teamScore += calculatePoints(player)
+    console.log(`Points: ${teamScore}`)
+    if (calculateInjury(player)) {
+        console.log(`INJURY: ${player.name}`)
+        const injuredPlayer = teamCurrent.splice(playerIndex, 1)[0]
+        let nextOnBench = teamBench.shift()
+        teamCurrent.push(nextOnBench)
+        teamBench.push(injuredPlayer)
+        console.log(`new playing`, teamCurrent)
+        console.log(`new bench:`, teamBench)
+    }
+    return (teamScore)
+}
 createTeams()
 drawFullTeams()
 putPlayersOnField()
+//calculatePlay(currentlyPlayingTeam1, team1, 0)
 
