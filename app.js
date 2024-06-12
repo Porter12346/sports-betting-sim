@@ -3,6 +3,9 @@ let bank = 100
 let team1
 let team2
 
+let currentlyPlayingTeam1 = []
+let currentlyPlayingTeam2 = []
+
 const players = [
     {
         name: "D'Marcus Williums",
@@ -226,8 +229,8 @@ function createTeams() {
         console.log(validPlayerPool[chosenPlayerIndex])
     }
     //fiters assigned players into their team array
-    let team1 = players.filter((player) => player.teamNumber == 1)
-    let team2 = players.filter((player) => player.teamNumber == 2)
+    team1 = players.filter((player) => player.teamNumber == 1)
+    team2 = players.filter((player) => player.teamNumber == 2)
 
     //sort each team array by the skill of players
     team1.sort((a, b) => b.skill - a.skill)
@@ -237,5 +240,23 @@ function createTeams() {
     console.log(team2)
 }
 
+function putPlayersOnField() {
+    do {
+        let nextOnBench = team1.shift()
+        currentlyPlayingTeam1.push(nextOnBench)
+    }
+    while (currentlyPlayingTeam1.length < 5)
+    console.log(`Bench: ${team1}`)
+    console.log(`On Field: ${currentlyPlayingTeam1}`)
 
+    do {
+        let nextOnBench = team2.shift()
+        //ask about the push error
+        currentlyPlayingTeam2.push(nextOnBench)
+    }
+    while (currentlyPlayingTeam2.length < 5)
+    console.log(`Bench: ${team2}`)
+    console.log(`On Field: ${currentlyPlayingTeam2}`)
+
+}
 
