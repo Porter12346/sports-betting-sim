@@ -1,3 +1,8 @@
+
+// TODO eventlog need to load into text to go in to div with id eventlog for each action b a player
+
+
+
 let bank = 100
 
 let team1
@@ -12,6 +17,10 @@ let round = 1
 let team1Score = 0
 
 let team2Score = 0
+
+let eventLogText = ``
+
+document.getElementById("midgame-display").style.display = 'none'
 
 const players =
     [
@@ -264,7 +273,6 @@ function putPlayersOnField() {
     console.log(`team2 bench: `, team2)
 }
 
-
 function drawFullTeams() {
     let team1Html = ``
     team1.forEach((player) => team1Html += `<div div class="d-flex flex-column align-items-center" > <span class="fs-1">${player.emoji}</span> ${player.name} <br> Skill: ${player.skill} <br> Risk: ${player.chanceOfInjury}</div>`)
@@ -276,10 +284,35 @@ function drawFullTeams() {
 }
 
 function startQuarter() {
-    let delay = setTimeout(() => { console.log('waiting'); }, 2000);
-    calculatePlay(currentlyPlayingTeam1, team1, 0)
-    calculatePlay(currentlyPlayingTeam2, team2, 0)
+    document.getElementById("pregame-display").style.display = 'none'
+    document.getElementById("midgame-display").style.display = 'block'
+    let delay = setTimeout(() => { console.log('waiting'); }, 10000);
+
+    var i = 0;
+    function timedLoop() {
+        setTimeout(function () {
+            if (i % 2) {
+                team2Score = calculatePlay(currentlyPlayingTeam2, team2, team2Score)
+            }
+            else {
+                team1Score = calculatePlay(currentlyPlayingTeam1, team1, team1Score)
+            }
+            drawPlayingTeams()
+            i++;
+            if (i < 8) {
+                timedLoop();
+            }
+        }, 3500)
+    }
+    timedLoop()
+
+    quarter++
+    if (quarter == 5) {
+        // endGame()
+    }
 }
+
+
 
 function calculatePoints(player) {
     let baseShot = Math.random() * 100
@@ -321,8 +354,32 @@ function calculatePlay(teamCurrent, teamBench, teamScore) {
     }
     return (teamScore)
 }
+
+function drawPlayingTeams() {
+    let team1HtmlField = ``
+    currentlyPlayingTeam1.forEach((player) => team1HtmlField += `<div div class="d-flex flex-column align-items-center" > <span class="fs-1">${player.emoji}</span> ${player.name} <br> Skill: ${player.skill} <br> Risk: ${player.chanceOfInjury}</div>`)
+    document.getElementById("playing-team1-display").innerHTML = team1HtmlField
+
+    let team1HtmlBench = ``
+    team1.forEach((player) => team1HtmlBench += `<div div class="d-flex flex-column align-items-center" > <span class="fs-1">${player.emoji}</span> ${player.name} <br> Skill: ${player.skill} <br> Risk: ${player.chanceOfInjury}</div>`)
+    document.getElementById("bench-team1-display").innerHTML = team1HtmlBench
+
+    let team2HtmlField = ``
+    currentlyPlayingTeam2.forEach((player) => team2HtmlField += `<div div class="d-flex flex-column align-items-center" > <span class="fs-1">${player.emoji}</span> ${player.name} <br> Skill: ${player.skill} <br> Risk: ${player.chanceOfInjury}</div>`)
+    document.getElementById("playing-team2-display").innerHTML = team2HtmlField
+
+    let team2HtmlBench = ``
+    team2.forEach((player) => team2HtmlBench += `<div div class="d-flex flex-column align-items-center" > <span class="fs-1">${player.emoji}</span> ${player.name} <br> Skill: ${player.skill} <br> Risk: ${player.chanceOfInjury}</div>`)
+    document.getElementById("bench-team2-display").innerHTML = team2HtmlBench
+
+    document.getElementById('team1-score').innerText = String(team1Score)
+    document.getElementById('team2-score').innerText = String(team2Score)
+}
+
 createTeams()
 drawFullTeams()
 putPlayersOnField()
 //calculatePlay(currentlyPlayingTeam1, team1, 0)
+drawPlayingTeams()
+
 
