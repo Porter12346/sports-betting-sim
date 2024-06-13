@@ -306,14 +306,21 @@ function startQuarter() {
                 team1Score = calculatePlay(currentlyPlayingTeam1, team1, team1Score)
             }
             drawPlayingTeams()
-            document.getElementById("event-log").innerText = eventLogText
+            document.getElementById("event-log").innerHTML = eventLogText
+            if (i % 2) {
+                eventLogText = `<span class="text-danger">${eventLogText}</span>`
+            }
+            else {
+                eventLogText = `<span class="text-primary">${eventLogText}</span>`
+            }
             if (i < 7) {
-                document.getElementById("event-log").innerText = eventLogText
+
+                document.getElementById("event-log").innerHTML = eventLogText
                 eventLogText = ''
             }
             else {
                 eventLogText += " [End of quarter]"
-                document.getElementById("event-log").innerText = eventLogText
+                document.getElementById("event-log").innerHTML = eventLogText
                 if (quarter != 4) {
                     document.getElementById("start-quarter-button").style.display = "block"
                 }
@@ -409,6 +416,7 @@ function drawPlayingTeams() {
     document.getElementById('team1-score').innerText = String(team1Score)
     document.getElementById('team2-score').innerText = String(team2Score)
 }
+
 function betTeam1(amount) {
     if (amount < 0) {
         amount = balance
