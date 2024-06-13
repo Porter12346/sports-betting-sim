@@ -70,9 +70,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 justify-content-center d-flex">
+                <!-- <div class="col-12 justify-content-center d-flex">
                     <h3>VS</h3>
-                </div>
+                </div> -->
                 <div class="col-12">
                     <div class="text-light">
                         <h5 class="text-dark align-text-center">Team 2 Score: <span id="team2-score">0</span></h5>
@@ -85,7 +85,11 @@
                     </div>
                 </div>
             </div>
-            <p id="event-log"></p>
+            <div class="d-flex justify-content-between">
+                <p id="event-log"></p>
+                <button onclick="startQuarter()" class="btn btn-primary" id="start-quarter-button"> Start
+                    Quarter</button>
+            </div>
         </div>
 
     </main>

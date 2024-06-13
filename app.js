@@ -1,8 +1,6 @@
 
 // TODO eventlog need to load into text to go in to div with id eventlog for each action b a player
 
-
-
 let bank = 100
 
 let team1
@@ -289,8 +287,11 @@ function startQuarter() {
     let delay = setTimeout(() => { console.log('waiting'); }, 10000);
 
     var i = 0;
+    document.getElementById("start-quarter-button").style.display = "none"
+
     function timedLoop() {
         setTimeout(function () {
+            document.getElementById("start-quarter-button").style.display = "none"
             if (i % 2) {
                 team2Score = calculatePlay(currentlyPlayingTeam2, team2, team2Score)
             }
@@ -298,6 +299,17 @@ function startQuarter() {
                 team1Score = calculatePlay(currentlyPlayingTeam1, team1, team1Score)
             }
             drawPlayingTeams()
+            document.getElementById("event-log").innerText = eventLogText
+            if (i < 7) {
+                document.getElementById("event-log").innerText = eventLogText
+                eventLogText = ''
+            }
+            else {
+                eventLogText += " [End of quarter]"
+                document.getElementById("event-log").innerText = eventLogText
+                document.getElementById("start-quarter-button").style.display = "block"
+                eventLogText = ''
+            }
             i++;
             if (i < 8) {
                 timedLoop();
@@ -312,24 +324,26 @@ function startQuarter() {
     }
 }
 
-
-
 function calculatePoints(player) {
     let baseShot = Math.random() * 100
-    if (baseShot + player.skill < 150) {
+    if (baseShot + player.skill > 155) {
+        eventLogText += `Player: ${player.name} ${player.emoji} has scored 3 points`
         return (3)
     }
-    else if (baseShot + player.skill < 150) {
+    else if (baseShot + player.skill > 90) {
+        eventLogText += `Player: ${player.name} ${player.emoji} has scored 2 points`
         return (2)
     }
     else {
+        eventLogText += `Player: ${player.name} ${player.emoji} has missed their shot`
         return 0
     }
 }
 
 function calculateInjury(player) {
-    let baseInjury = Math.random() * 100
-    if (baseInjury + player.chanceOfInjury < 100) {
+    let baseInjury = (Math.random() * 100)
+    if (baseInjury + player.chanceOfInjury > 95) {
+        eventLogText += ` unfortunatly they got injured and are on the bench`
         return (true)
     }
     else {
@@ -357,19 +371,19 @@ function calculatePlay(teamCurrent, teamBench, teamScore) {
 
 function drawPlayingTeams() {
     let team1HtmlField = ``
-    currentlyPlayingTeam1.forEach((player) => team1HtmlField += `<div div class="d-flex flex-column align-items-center" > <span class="fs-1">${player.emoji}</span> ${player.name} <br> Skill: ${player.skill} <br> Risk: ${player.chanceOfInjury}</div>`)
+    currentlyPlayingTeam1.forEach((player) => team1HtmlField += `<div div class="d-flex flex-column align-items-center" > <span class="fs-2">${player.emoji}</span> ${player.name} <br> Skill: ${player.skill} <br> Risk: ${player.chanceOfInjury}</div>`)
     document.getElementById("playing-team1-display").innerHTML = team1HtmlField
 
     let team1HtmlBench = ``
-    team1.forEach((player) => team1HtmlBench += `<div div class="d-flex flex-column align-items-center" > <span class="fs-1">${player.emoji}</span> ${player.name} <br> Skill: ${player.skill} <br> Risk: ${player.chanceOfInjury}</div>`)
+    team1.forEach((player) => team1HtmlBench += `<div div class="d-flex flex-column align-items-center" > <span class="fs-3">${player.emoji}</span> ${player.name} <br> Skill: ${player.skill} <br> Risk: ${player.chanceOfInjury}</div>`)
     document.getElementById("bench-team1-display").innerHTML = team1HtmlBench
 
     let team2HtmlField = ``
-    currentlyPlayingTeam2.forEach((player) => team2HtmlField += `<div div class="d-flex flex-column align-items-center" > <span class="fs-1">${player.emoji}</span> ${player.name} <br> Skill: ${player.skill} <br> Risk: ${player.chanceOfInjury}</div>`)
+    currentlyPlayingTeam2.forEach((player) => team2HtmlField += `<div div class="d-flex flex-column align-items-center" > <span class="fs-2">${player.emoji}</span> ${player.name} <br> Skill: ${player.skill} <br> Risk: ${player.chanceOfInjury}</div>`)
     document.getElementById("playing-team2-display").innerHTML = team2HtmlField
 
     let team2HtmlBench = ``
-    team2.forEach((player) => team2HtmlBench += `<div div class="d-flex flex-column align-items-center" > <span class="fs-1">${player.emoji}</span> ${player.name} <br> Skill: ${player.skill} <br> Risk: ${player.chanceOfInjury}</div>`)
+    team2.forEach((player) => team2HtmlBench += `<div div class="d-flex flex-column align-items-center" > <span class="fs-3">${player.emoji}</span> ${player.name} <br> Skill: ${player.skill} <br> Risk: ${player.chanceOfInjury}</div>`)
     document.getElementById("bench-team2-display").innerHTML = team2HtmlBench
 
     document.getElementById('team1-score').innerText = String(team1Score)
