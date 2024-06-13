@@ -290,6 +290,7 @@ function drawFullTeams() {
 function startQuarter() {
     document.getElementById("pregame-display").style.display = 'none'
     document.getElementById("midgame-display").style.display = 'block'
+    document.getElementById("site-header").style.display = 'none'
     let delay = setTimeout(() => { console.log('waiting'); }, 10000);
 
     var i = 0;
@@ -313,21 +314,34 @@ function startQuarter() {
             else {
                 eventLogText += " [End of quarter]"
                 document.getElementById("event-log").innerText = eventLogText
-                document.getElementById("start-quarter-button").style.display = "block"
+                if (quarter != 4) {
+                    document.getElementById("start-quarter-button").style.display = "block"
+                }
+
                 eventLogText = ''
+
             }
             i++;
+            if (i == 8) {
+
+                console.log(`quarterfinished`)
+                if (quarter == 4) {
+                    console.log('game finished')
+                    endGame()
+                    quarter = 1
+                }
+                else {
+                    console.log('jobs not done')
+                    quarter++
+                }
+
+            }
             if (i < 8) {
                 timedLoop();
             }
-        }, 3500)
+        }, 1500)
     }
     timedLoop()
-
-    quarter++
-    if (quarter == 5) {
-        // endGame()
-    }
 }
 
 function calculatePoints(player) {
@@ -427,10 +441,44 @@ function drawBalance() {
     document.getElementById("balanceSpan").innerText = `${balance.toFixed(2)}`
 }
 
+function endGame() {
+    if (team1Score > team2Score && team1Bet > 0) {
+        alert(`Team 1 Wins! you have been awarded $${team1Bet * 2}`)
+        balance += team1Bet * 2
+    }
+    else if (team2Score > team1Score && team2Bet > 0) {
+        alert(`Team 2 Wins! you have been awarded $${team2Bet * 2}`)
+        balance += team2Bet * 2
+    }
+    else if (team1Score == team2Score) {
+        alert(`nobody wins :( `)
+        balance += team1Bet + team2Bet
+    }
+    else {
+        alert('you lose')
+    }
+    drawBalance()
+    currentlyPlayingTeam1 = []
+    currentlyPlayingTeam2 = []
+    players.forEach((player) => player.teamNumber = 0)
+    createTeams()
+    drawFullTeams()
+    putPlayersOnField()
+    team1Score = 0
+    team2Score = 0
+    team1Bet = 0
+    team2Bet = 0
+    document.getElementById("midgame-display").style.display = 'none'
+    document.getElementById("pregame-display").style.display = 'block'
+    document.getElementById("site-header").style.display = 'block'
+
+}
+
 createTeams()
 drawFullTeams()
 putPlayersOnField()
 //calculatePlay(currentlyPlayingTeam1, team1, 0)
 drawPlayingTeams()
+drawBalance()
 
 
