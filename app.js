@@ -18,6 +18,12 @@ let team2Score = 0
 
 let eventLogText = ``
 
+let balance = 500
+
+let team1Bet = 0
+
+let team2Bet = 0
+
 document.getElementById("midgame-display").style.display = 'none'
 
 const players =
@@ -388,6 +394,37 @@ function drawPlayingTeams() {
 
     document.getElementById('team1-score').innerText = String(team1Score)
     document.getElementById('team2-score').innerText = String(team2Score)
+}
+function betTeam1(amount) {
+    if (amount < 0) {
+        amount = balance
+    }
+    if (amount <= balance) {
+        balance -= amount
+        team1Bet += amount
+    }
+    else {
+        alert("Insufficent balance. Please deposit")
+    }
+    drawBalance()
+}
+
+function betTeam2(amount) {
+    if (amount < 0) {
+        amount = balance
+    }
+    if (amount <= balance) {
+        balance -= amount
+        team2Bet += amount
+    }
+    else {
+        alert("Insufficent balance. Please deposit")
+    }
+    drawBalance()
+}
+
+function drawBalance() {
+    document.getElementById("balanceSpan").innerText = `${balance.toFixed(2)}`
 }
 
 createTeams()

@@ -19,7 +19,7 @@
                     <h1>Bet Offline</h1>
                 </div>
                 <div class="col-6">
-                    <h3>Balance: $0.00</h3>
+                    <h3>Balance: $<span id="balanceSpan"></span></h3>
                 </div>
 
             </div>
@@ -50,6 +50,20 @@
 
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6  d-flex flex-column">
+                    <h4>Team 1</h4>
+                    <button onclick="betTeam1(100)" class="btn btn-primary my-2">Bet 100</button>
+                    <button onclick="betTeam1(500)" class="btn btn-primary  my-2">Bet 500</button>
+                    <button onclick="betTeam1(-1)" class="btn btn-primary  my-2">Bet ALL IN</button>
+                </div>
+                <div class="col-6 d-flex flex-column">
+                    <h4>Team 2</h4>
+                    <button onclick="betTeam2(100)" class="btn btn-danger my-2">Bet 100</button>
+                    <button onclick="betTeam2(500)" class="btn btn-danger my-2">Bet 500</button>
+                    <button onclick="betTeam2(-1)" class="btn btn-danger my-2">Bet ALL IN</button>
                 </div>
             </div>
         </div>
