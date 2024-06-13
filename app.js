@@ -346,7 +346,7 @@ function startQuarter() {
             if (i < 8) {
                 timedLoop();
             }
-        }, 1500)
+        }, 1000)
     }
     timedLoop()
 }
